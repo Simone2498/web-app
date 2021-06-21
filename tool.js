@@ -7,7 +7,7 @@ $(document).ready(function(){
    let _R = [];
    let _NR = [];
    get_encode(_qry);
-   search(_enc_qry, 0);
+   search(_enc_qry, 0, 0);
    /*---- Modifica della query di ricerca ----*/ 
    $(`#modifyBtn`).click(function(){
       $(`#modifyModal`).modal('toggle'); 
@@ -17,7 +17,7 @@ $(document).ready(function(){
       $(`#modifyModal`).modal('toggle'); 
       _qry = $(`#query`).val();
       get_encode(_qry);
-      search(_enc_qry, $(`#expandSearch`).data('state'));
+      search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
    });
    /*---- Ricerca dinamica ----*/
    $(`#dynamicSearch`).click(function(){
@@ -35,15 +35,15 @@ $(document).ready(function(){
        if($(this).data('state')!=1){
            $(this).css('color','#007bff');
            $(this).data('state',1);
-           search(_enc_qry, $(`#expandSearch`).data('state'));
+           search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
        }
        else{
            $(this).css('color','black');
            $(this).data('state',0);
-           search(_enc_qry, $(`#expandSearch`).data('state'));
+           search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
        }
    });
-   
+
    
    function UI_searchresults(list){
        str = '';
@@ -164,14 +164,14 @@ $(document).ready(function(){
         $(`#readModal`).modal('hide');
     });
    
-   function search(enc, inc, dyn=0, R=[], NR=[]){
+   function search(enc, inc, dyn=0){
        data = {};
        data.enc = enc;
        data.inc = inc;
        data.dyn = dyn;
        if (dyn)
-        data.R = JSON.stringify(R);
-        data.NR = JSON.stringify(NR);
+        data.R = JSON.stringify(_R);
+        data.NR = JSON.stringify(_NR);
        $.post(
            'https://flask-app-sp9di.ondigitalocean.app/search',
            data,
