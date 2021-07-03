@@ -1,13 +1,15 @@
 $(document).ready(function(){
-   
+   let _PATH = 'https://flask-app-sp9di.ondigitalocean.app/'//'http://127.0.0.1:5000/'; 
    let _results_list = [[0,'zero',0],[1,'uno',0],[2,'due',0],[3,'tre',0]];
-   _qry = 'Ciao a tutti'; //FOR DEBUG
+   _qry = 'data protection and privacy'; //FOR DEBUG
    let _my_report = [];
    let _enc_qry = [];
    let _R = [];
    let _NR = [];
    get_encode(_qry);
+   
    search(_enc_qry, 0, 0);
+   
    /*---- Modifica della query di ricerca ----*/ 
    $(`#modifyBtn`).click(function(){
       $(`#modifyModal`).modal('toggle'); 
@@ -48,11 +50,13 @@ $(document).ready(function(){
    function UI_searchresults(list){
        str = '';
        for (el of list){
-           str += `<tr id='L_${el[0]}'>
+		   
+			str += `<tr id='L_${el[0]}'>
                       <td>${el[1]}</td>
                       <td style="text-align:center"><button type="button" class="btn btn-light info" style="padding: 5px;" data-toggle="tooltip" data-placement="bottom" title="Leggi"><i class="far fa-question-circle"></i></button></td>
                       <td style="text-align:center"><button type="button" class="btn btn-light move" style="padding: 5px;" data-toggle="tooltip" data-placement="bottom" title="Inserisci nel report"><i class="fas fa-arrow-circle-right"></i></button></td>
                     </tr>`;
+		   
        }
        $(`#col_sx`).html(str);
        
@@ -60,15 +64,17 @@ $(document).ready(function(){
            let id = $(this).parent().parent().attr('id').split('_')[1];
            $(`#col_dx`).prepend(UI_row_dx(id));
            $(this).parent().parent().hide();
-           _my_report.append(id);
-            const index = _NR.indexOf(id);//Add to relevant documents or remove from not relevant
-            if (index > -1) {
-                _NR.splice(index, 1);
-            }
-            else{
-                _R.append(id);
-            } 
-           
+           _my_report.push(id);
+		   const index = _NR.indexOf(id);//Add to relevant documents or remove from not relevant
+		   if (index > -1) {
+				_NR.splice(index, 1);
+		   }
+		   else{
+				_R.push(id);
+		   } 
+		   if($(`#dynamicSearch`).data('state')!=0)
+			search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
+		   $(`.remove`).off('click');
            $(`.remove`).click(function(){
                let id = $(this).parent().parent().attr('id').split('_')[1];
                $(`#L_${id}`).show();
@@ -79,15 +85,19 @@ $(document).ready(function(){
                     _R.splice(index, 1);
                 }
                 else{
-                    _NR.append(id);
+                    _NR.push(id);
                 }
+				if($(`#dynamicSearch`).data('state')!=0)
+					search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
            });
+		   $(`.info`).off('click');
            $(`.info`).click(function(){
                let id = $(this).parent().parent().attr('id').split('_')[1];
                UI_infobox(id);
            });
            
        });
+	   $(`.info`).off('click');
        $(`.info`).click(function(){
            let id = $(this).parent().parent().attr('id').split('_')[1];
            UI_infobox(id);
@@ -118,17 +128,27 @@ $(document).ready(function(){
    function get_encode(text){
         data = {};
         data.qry = text;
-        $.post(
-            'https://flask-app-sp9di.ondigitalocean.app/encode',
-            data,
-            function(ret){
+        $.ajax({
+            url: _PATH+'encode',
+            data: data,
+			method:'POST',
+			async:false,
+            success: function(ret){
                 try {
                     _enc_qry = ret;
                 }
                 catch (e){
                     alert(`C'é stato un errore di comunicazione con il server, ti invitiamo a provare piú tardi o a contattare l'assistenza`);
                 }
-            });
+		}});
+   }
+
+   function is_in(id){
+	   for (el in _my_report){
+		   if (el==id)
+			   return true
+	   }
+	   return false
    }
 
    /*---- Info BOX ----*/
@@ -136,7 +156,7 @@ $(document).ready(function(){
        data={}
        data.id=id
        $.post(
-           'https://flask-app-sp9di.ondigitalocean.app/get_info',
+           _PATH+'get_info',
            data,
            function(ret){
                try {
@@ -164,16 +184,16 @@ $(document).ready(function(){
         $(`#readModal`).modal('hide');
     });
    
-   function search(enc, inc, dyn=0){
+    function search(enc, inc, dyn=0){
        data = {};
-       data.enc = enc;
+       data.enc = JSON.stringify(enc);
        data.inc = inc;
        data.dyn = dyn;
        if (dyn)
         data.R = JSON.stringify(_R);
         data.NR = JSON.stringify(_NR);
        $.post(
-           'https://flask-app-sp9di.ondigitalocean.app/search',
+           _PATH+'search',
            data,
            function(ret){
                try {
