@@ -1,5 +1,5 @@
 $(document).ready(function(){
-   let _PATH = 'https://flask-app-sp9di.ondigitalocean.app/'//'http://127.0.0.1:5000/'; 
+   let _PATH = 'http://127.0.0.1:5000/'; //'https://flask-app-sp9di.ondigitalocean.app/'//
    let _results_list = [[0,'zero',0],[1,'uno',0],[2,'due',0],[3,'tre',0]];
    _qry = 'data protection and privacy'; //FOR DEBUG
    let _my_report = [];
@@ -51,7 +51,7 @@ $(document).ready(function(){
        str = '';
        for (el of list){
 		   
-			str += `<tr id='L_${el[0]}'>
+			str += `<tr id='L_${el[0]}' style='display:${is_in(el[0])? 'none':''}'>
                       <td>${el[1]}</td>
                       <td style="text-align:center"><button type="button" class="btn btn-light info" style="padding: 5px;" data-toggle="tooltip" data-placement="bottom" title="Leggi"><i class="far fa-question-circle"></i></button></td>
                       <td style="text-align:center"><button type="button" class="btn btn-light move" style="padding: 5px;" data-toggle="tooltip" data-placement="bottom" title="Inserisci nel report"><i class="fas fa-arrow-circle-right"></i></button></td>
@@ -105,7 +105,7 @@ $(document).ready(function(){
    }
    
    function UI_row_dx(id){
-        return `<tr id='D_${id}'>
+        return `<tr id='R_${id}'>
                   <td>${get_law_name(id)}</td>
                   <td style="text-align:center"><button type="button" class="btn btn-light info" style="padding: 5px;" data-toggle="tooltip" data-placement="bottom" title="Leggi"><i class="far fa-question-circle"></i></button></td>
                   <td style="text-align:center"><button type="button" class="btn btn-light remove" style="padding: 5px;" data-toggle="tooltip" data-placement="bottom" title="Rimuovi"><i class="fas fa-minus-circle"></i></button></td>
@@ -144,7 +144,7 @@ $(document).ready(function(){
    }
 
    function is_in(id){
-	   for (el in _my_report){
+	   for (el of _my_report){
 		   if (el==id)
 			   return true
 	   }
@@ -168,11 +168,14 @@ $(document).ready(function(){
                 $(`#info_insert`).data('id',ret[0]);
                 $(`#info_link`).data('href',ret[7]);
                 $(`#readModal`).modal('show');
+
                }
                catch (e){
                 alert(`C'é stato un errore di comunicazione con il server, ti invitiamo a provare piú tardi o a contattare l'assistenza`);
                }
        });
+       if(is_in(id)) $(`#info_insert`).text('Rimuovi');
+       else $(`#info_insert`).text('Inserisci');
    }
    $(`#info_link`).click(function(){
         let link = $(this).data('href');
@@ -180,7 +183,9 @@ $(document).ready(function(){
     });
    $(`#info_insert`).click(function(){
         let id = $(this).data('id');
-        $(`#L_${id}`).children().eq(2).children().click();
+        if(!is_in(id))  $(`#L_${id}`).children().eq(2).children().click();
+        else    $(`#R_${id}`).children().eq(2).children().click();
+            
         $(`#readModal`).modal('hide');
     });
    
