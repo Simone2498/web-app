@@ -32,14 +32,14 @@
         <script src="./tool.js"></script>
         <!-- Init -->
         <script>
-           let _qry = `<?php if (isset($_POST['qry'])) echo $_POST['qry']; else echo ''; ?>`;
+           let _qry = "<?php if (isset($_POST["qry"]))? echo $_POST["qry"]; : else echo "data protection and privacy"; ?>";
         </script>
         
         
         <!-- Navbar -->
         <ul class="nav my-nav" style='height:6vh'>
           <li class="nav-item w-25 text-center align-self-center">
-            <button type="button" class="btn btn-light" style="padding: 5px;width:60%;background-color:white" data-toggle="tooltip" data-placement="bottom" title="Indietro" onclick='window.location="./home.php"'><i class="fas fa-arrow-circle-left"></i></button>
+            <button type="button" class="btn btn-light" style="padding: 5px;width:60%;background-color:white" data-toggle="tooltip" data-placement="bottom" title="Indietro" onclick='window.location="./home.html"'><i class="fas fa-arrow-circle-left"></i></button>
           </li>
           <li class="nav-item w-25 text-center align-self-center">
             <button type="button" class="btn btn-light" style="padding: 5px;width:60%;background-color:white" data-toggle="tooltip" data-placement="bottom" title="Edit query" id='modifyBtn'><i class="fas fa-edit"></i></button>
@@ -129,6 +129,12 @@
             </div>
           </div>
         </div>
+
+      <div id='replace' style='position:absolute; z-index:10; background-color:#f8f9fa; top: -1000; left:-1000; text-align:center; opacity:0.8'>
+          <img src="./placeholder.png" class="" alt="..." style="width:65%;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);">
+          <h5 style="position: absolute;top: 70%;left: 50%;transform: translate(-50%,0);">Caricamento in corso...</h5>
+      </div>  
+        
         
     </body>
 </html>

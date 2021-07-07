@@ -1,7 +1,7 @@
 $(document).ready(function(){
-   let _PATH = 'https://flask-app-sp9di.ondigitalocean.app/'; //'http://127.0.0.1:5000/'; 
+   let _PATH = 'http://127.0.0.1:5000/';//'https://flask-app-sp9di.ondigitalocean.app/'; // 
    let _results_list = [[0,'zero',0],[1,'uno',0],[2,'due',0],[3,'tre',0]];
-   _qry = 'data protection and privacy'; //FOR DEBUG
+   //_qry = 'data protection and privacy'; //FOR DEBUG
    let _my_report = [];
    let _enc_qry = [];
    let _R = [];
@@ -45,14 +45,23 @@ $(document).ready(function(){
            search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
        }
    });
-
    
+   function load_placeholder(obj){ //Attiva nel container obj, da chiamare prima della funzione
+        let pos = $(obj).offset();
+        let width = $(obj).css('width');
+        let height = $(obj).css('height');
+        $('#replace').css({top: pos.top, left: pos.left, width: width, height: height});
+    }
+   function close_placeholder(){ //Disattiva, da chiamare a fine funzione. Occhio alle async end_place
+        $('#replace').css({top: -1000, left: -1000, width: 0, height: 0});
+    }
+
    function UI_searchresults(list){
        str = '';
        for (el of list){
-		   
+		    nome = el[1];
 			str += `<tr id='L_${el[0]}' style='display:${is_in(el[0])? 'none':''}'>
-                      <td>${el[1]}</td>
+                      <td>${nome}</td>
                       <td style="text-align:center"><button type="button" class="btn btn-light info" style="padding: 5px;" data-toggle="tooltip" data-placement="bottom" title="Leggi"><i class="far fa-question-circle"></i></button></td>
                       <td style="text-align:center"><button type="button" class="btn btn-light move" style="padding: 5px;" data-toggle="tooltip" data-placement="bottom" title="Inserisci nel report"><i class="fas fa-arrow-circle-right"></i></button></td>
                     </tr>`;
@@ -102,6 +111,7 @@ $(document).ready(function(){
            let id = $(this).parent().parent().attr('id').split('_')[1];
            UI_infobox(id);
        });
+       close_placeholder();
    }
    
    function UI_row_dx(id){
@@ -190,6 +200,7 @@ $(document).ready(function(){
     });
    
     function search(enc, inc, dyn=0){
+       load_placeholder($('#col_sx').parent().parent());
        data = {};
        data.enc = JSON.stringify(enc);
        data.inc = inc;
@@ -210,6 +221,7 @@ $(document).ready(function(){
                     _NR =[];
                 }
                 UI_searchresults(_results_list);
+                close_placeholder();
                }
                catch (e){
                 alert(`C'é stato un errore di comunicazione con il server, ti invitiamo a provare piú tardi o a contattare l'assistenza`);
