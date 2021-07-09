@@ -32,7 +32,7 @@
         <script src="./tool.js"></script>
         <!-- Init -->
         <script>
-           let _qry = "<?php if (isset($_POST["qry"]))? echo $_POST["qry"]; : else echo "data protection and privacy"; ?>";
+           let _qry = "<?php if (isset($_POST["qry"])) echo $_POST["qry"]; else echo "data protection and privacy"; ?>";
         </script>
         
         
