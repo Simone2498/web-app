@@ -1,10 +1,10 @@
 <?php
 require("./fpdf182/fpdf.php");
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
-$DEBUG = TRUE;
+$DEBUG = FALSE;
 
 class PDF extends FPDF{
     function __construct($orient, $unit, $size, $logo, $text){
