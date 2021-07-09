@@ -4,6 +4,17 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+define("HOST", "db-mysql-ams3-72238-do-user-9409391-0.b.db.ondigitalocean.com");//aggiungi :port se usi protoccolo TCP/IP
+define("USER", "doadmin");
+define ("PASSWORD", "s9gy3byw3ti4yeac");
+define ("DATABASE", "legal");
+$mysqli= new mysqli(HOST, USER, PASSWORD, DATABASE);
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
+}
+$mysqli->query("SET NAMES 'utf8'");
+
+
 $DEBUG = FALSE;
 
 class PDF extends FPDF{
