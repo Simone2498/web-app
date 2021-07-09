@@ -1,7 +1,7 @@
 <?php
 require("./fpdf182/fpdf.php");
 
-DEBUG = TRUE;
+$DEBUG = TRUE;
 
 class PDF extends FPDF{
     function __construct($orient, $unit, $size, $logo, $text){
@@ -11,10 +11,9 @@ class PDF extends FPDF{
         $this->$or=$orient;
     }
     function Header(){
-        //$this->Image('./.png', 40, 65, 200, 200);
         if($this->$or=='P'){
             $w=$this->GetPageWidth();
-            $this->Image($this->logo,10,6,33);
+            $this->Image($this->logo,10,6,55);
             $this->SetFont('Arial','I',10);
             $this->SetY(10);
             $this->Cell($w-70-10,0);
@@ -37,34 +36,67 @@ class PDF extends FPDF{
         $this->SetFont('Arial','I',10);
         $this->Cell(0,10,$this->PageNo().' di {nb}',0,0,'C');
         $this->SetX(150);
-        $this->Image('./img/powered_by.png',$w-65,$this->GetY()-2,60);
+        $this->Image('./logo1.png',$w-65,$this->GetY()-2,25);
     }
 }
 
 $intro = "Prova di scrittura\nTest di scrittura";
 
-if(isset($_POST['report']) or DEBUG){
-    //$report = json_decode($_POST['report']);//
-    $report = [1,2,3]
-    $pdf = new FPDF('P', 'mm', 'A4')//, './logo1.png',$intro);
+if(isset($_POST['report']) or $DEBUG){
+    if($DEBUG) $report = [1,2,3];
+    else $report = json_decode($_POST['report']); 
+    $pdf = new PDF('P', 'mm', 'A4', './logo1.png', $intro);
     $pdf->AddPage();
-    /*
+    $w=$pdf->GetPageWidth();
     $data_struct = [];
     foreach($report as $idx){
-        $qry = "SELECT text FROM gdpr_enc WHERE id=".$idx;
+        $qry = "SELECT chapter, article, sub_article, text FROM gdpr_enc WHERE id=".$idx." ORDER BY id";
         $res=$mysqli->query($qry);
         $res=$res->fetch_array();
         array_push($data_struct, $res);
     }
-    */
-    //ordina
-
+    $data_struct = [[1,2,3,'ciao'],[1,3,1,'ciao numero 2']];
     //print
+    $pdf->SetFont('Arial','B',16);
+    $pdf->Cell(0,20,'Prospetto del report generato',0,1,'C');
+    $ch_id=-1; 
+    $art_id=-1;
+    foreach ($data_struct as $law){
+        $pdf->SetFont('Arial','B',10);
+        if($ch_id!=$law[0]){ //Chapter
+            $ch_id=$law[0];
+            $pdf->SetLeftMargin(10);
+            $pdf->Cell(0,4,get_chapter($law[0]),0,1,'L');
+        }
+        if($art_id!=$law[1]){ //Article
+            $art_id=$law[1];
+            $pdf->SetLeftMargin(15);
+            $pdf->Cell(0,4,get_article($law[1]),0,1,'L');
+        }
+        $pdf->SetLeftMargin(17);
+        $pdf->Cell(0,4,'comma.'.$law[2],0,1,'L'); //Comma
+        //print text
+        $pdf->SetLeftMargin(20);
+        $pdf->SetFont('Arial','I',8);
+        $pdf->MultiCell($w-40,6,toUtf8($law[3]),0,'L',0);
+    }
+    
+    
 
     $pdf->Output();
 
 }
-else{
-    echo 'Error';
+
+
+function get_chapter($id){
+    return 'chapt_title'; //toUtf8()
 }
+function get_article($id){
+    return 'art_title';
+}
+function toUtf8($str){
+    return iconv('UTF-8', 'windows-1252', $str);
+}
+
+
 ?>
