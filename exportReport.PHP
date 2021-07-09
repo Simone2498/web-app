@@ -14,9 +14,6 @@ if ($mysqli->connect_error) {
 }
 $mysqli->query("SET NAMES 'utf8'");
 
-
-$DEBUG = FALSE;
-
 class PDF extends FPDF{
     function __construct($orient, $unit, $size, $logo, $text){
         parent::__construct($orient, $unit, $size);
@@ -56,7 +53,7 @@ class PDF extends FPDF{
 
 $intro = "Prova di scrittura\nTest di scrittura";
 
-if(!isset($_POST['report'])){
+if(isset($_POST['report'])){
     $report = json_decode($_POST['report']); 
     $data_struct = [];
     foreach($report as $idx){
