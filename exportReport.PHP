@@ -44,7 +44,7 @@ class PDF extends FPDF{
 $intro = "Prova di scrittura\nTest di scrittura";
 
 if(isset($_POST['report']) or DEBUG){
-    //$report = json_decode($_POST['report']);
+    //$report = json_decode($_POST['report']);//
     $report = [1,2,3]
     $pdf = new FPDF('P', 'mm', 'A4')//, './logo1.png',$intro);
     $pdf->AddPage();
