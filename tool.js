@@ -1,5 +1,5 @@
 $(document).ready(function(){
-   let _PATH = 'http://127.0.0.1:5000/';//'https://flask-app-sp9di.ondigitalocean.app/'; // 
+   let _PATH ='https://flask-app-sp9di.ondigitalocean.app/'; //  'http://127.0.0.1:5000/';//
    let _results_list = [[0,'zero',0],[1,'uno',0],[2,'due',0],[3,'tre',0]];
    //_qry = 'data protection and privacy'; //FOR DEBUG
    let _my_report = [];
