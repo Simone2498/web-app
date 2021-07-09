@@ -43,19 +43,20 @@ class PDF extends FPDF{
 $intro = "Prova di scrittura\nTest di scrittura";
 
 if(isset($_POST['report']) or $DEBUG){
-    if($DEBUG) $report = [1,2,3];
-    else $report = json_decode($_POST['report']); 
-    $pdf = new PDF('P', 'mm', 'A4', './logo1.png', $intro);
-    $pdf->AddPage();
-    $w=$pdf->GetPageWidth();
-    $data_struct = [];
-    foreach($report as $idx){
-        $qry = "SELECT chapter, article, sub_article, text FROM gdpr_enc WHERE id=".$idx." ORDER BY id";
-        $res=$mysqli->query($qry);
-        $res=$res->fetch_array();
-        array_push($data_struct, $res);
+    if($DEBUG) $data_struct = [[1,2,3,'ciao'],[1,3,1,'ciao numero 2']];
+    else{
+        $report = json_decode($_POST['report']); 
+        $pdf = new PDF('P', 'mm', 'A4', './logo1.png', $intro);
+        $pdf->AddPage();
+        $w=$pdf->GetPageWidth();
+        $data_struct = [];
+        foreach($report as $idx){
+            $qry = "SELECT chapter, article, sub_article, text FROM gdpr_enc WHERE id=".$idx." ORDER BY id";
+            $res=$mysqli->query($qry);
+            $res=$res->fetch_array();
+            array_push($data_struct, $res);
+        }
     }
-    $data_struct = [[1,2,3,'ciao'],[1,3,1,'ciao numero 2']];
     //print
     $pdf->SetFont('Arial','B',16);
     $pdf->Cell(0,20,'Prospetto del report generato',0,1,'C');
