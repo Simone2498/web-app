@@ -43,12 +43,12 @@ class PDF extends FPDF{
 $intro = "Prova di scrittura\nTest di scrittura";
 
 if(isset($_POST['report']) or $DEBUG){
+    $pdf = new PDF('P', 'mm', 'A4', './logo1.png', $intro);
+    $pdf->AddPage();
+    $w=$pdf->GetPageWidth();
     if($DEBUG) $data_struct = [[1,2,3,'ciao'],[1,3,1,'ciao numero 2']];
     else{
         $report = json_decode($_POST['report']); 
-        $pdf = new PDF('P', 'mm', 'A4', './logo1.png', $intro);
-        $pdf->AddPage();
-        $w=$pdf->GetPageWidth();
         $data_struct = [];
         foreach($report as $idx){
             $qry = "SELECT chapter, article, sub_article, text FROM gdpr_enc WHERE id=".$idx." ORDER BY id";
@@ -66,18 +66,18 @@ if(isset($_POST['report']) or $DEBUG){
         $pdf->SetFont('Arial','B',10);
         if($ch_id!=$law[0]){ //Chapter
             $ch_id=$law[0];
-            $pdf->SetLeftMargin(10);
+            $pdf->SetX(10);
             $pdf->Cell(0,4,get_chapter($law[0]),0,1,'L');
         }
         if($art_id!=$law[1]){ //Article
             $art_id=$law[1];
-            $pdf->SetLeftMargin(15);
+            $pdf->SetX(15);
             $pdf->Cell(0,4,get_article($law[1]),0,1,'L');
         }
-        $pdf->SetLeftMargin(17);
+        $pdf->SetX(17);
         $pdf->Cell(0,4,'comma.'.$law[2],0,1,'L'); //Comma
         //print text
-        $pdf->SetLeftMargin(20);
+        $pdf->SetX(20);
         $pdf->SetFont('Arial','I',8);
         $pdf->MultiCell($w-40,6,toUtf8($law[3]),0,'L',0);
     }
