@@ -99,7 +99,7 @@ else{
 
     $pdf->Output();
 
-}
+
 
 
 function get_chapter($id){
