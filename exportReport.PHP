@@ -11,7 +11,7 @@ class PDF extends FPDF{
         $this->$or=$orient;
     }
     function Header(){
-        $this->Image('./img/filigrana.png', 40, 65, 200, 200);
+        //$this->Image('./.png', 40, 65, 200, 200);
         if($this->$or=='P'){
             $w=$this->GetPageWidth();
             $this->Image($this->logo,10,6,33);
@@ -44,11 +44,11 @@ class PDF extends FPDF{
 $intro = "Prova di scrittura\nTest di scrittura";
 
 if(isset($_POST['report']) or DEBUG){
-    $report = json_decode($_POST['report']);
-
-    $pdf = new PDF('P', 'mm', 'A4', './img/logo.png',$intro);
+    //$report = json_decode($_POST['report']);
+    $report = [1,2,3]
+    $pdf = new PDF('P', 'mm', 'A4', './logo1.png',$intro);
     $pdf->AddPage();
-
+    /*
     $data_struct = [];
     foreach($report as $idx){
         $qry = "SELECT text FROM gdpr_enc WHERE id=".$idx;
@@ -56,10 +56,12 @@ if(isset($_POST['report']) or DEBUG){
         $res=$res->fetch_array();
         array_push($data_struct, $res);
     }
+    */
     //ordina
 
     //print
 
+    $pdf->Output();
 
 }
 ?>
