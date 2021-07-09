@@ -51,7 +51,7 @@ class PDF extends FPDF{
     }
 }
 
-$intro = "Prova di scrittura\nTest di scrittura";
+$intro = "";
 
 if(isset($_POST['report'])){
     $report = json_decode($_POST['report']); 
