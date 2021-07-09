@@ -82,7 +82,7 @@
                         </div>
                     </div>
                     <div class='row' style="margin: 0; height:6vh">
-                    <button type="button" class="btn btn-primary btn-sm" style="height: 4vh;margin-top: 1vh;padding: 0;width: 100%;background-color: #3c89c9;border-color: #3a75a6;"data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">Esporta report</button>
+                    <button type="button" class="btn btn-primary btn-sm" style="height: 4vh;margin-top: 1vh;padding: 0;width: 100%;background-color: #3c89c9;border-color: #3a75a6;" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom" id='exportReport'>Esporta report</button>
                     </div>
                 </div>
             </div>

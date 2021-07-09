@@ -206,9 +206,10 @@ $(document).ready(function(){
        data.enc = JSON.stringify(enc);
        data.inc = inc;
        data.dyn = dyn;
-       if (dyn)
+       if (dyn){
         data.R = JSON.stringify(_R);
         data.NR = JSON.stringify(_NR);
+       }
        $.post(
            _PATH+'search',
            data,
@@ -230,6 +231,19 @@ $(document).ready(function(){
            });
    }
    
-   
+   $("#exportReport").click(function(){
+    let form = document.createElement('FORM');
+    form.method='POST';
+    form.action = './exportReport.php';
+    form.target = 'pdfView'; //nome della nuova finestra
+    let in1 = document.createElement("INPUT");
+    in1.name='report';
+    in1.type="hidden";
+    in1.value=JSON.stringify(_my_report);
+    form.appendChild(in1);   
+    document.body.appendChild(form);
+    window.open("./exportReport.php","pdfView","location=no,width=600,height=600");
+    form.submit();
+   });
     
 });
