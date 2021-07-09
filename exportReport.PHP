@@ -64,4 +64,7 @@ if(isset($_POST['report']) or DEBUG){
     $pdf->Output();
 
 }
+else{
+    echo 'Error';
+}
 ?>
