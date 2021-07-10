@@ -59,7 +59,6 @@ if(isset($_POST['report'])){
     $data_struct = [];
     foreach($report as $idx){
         $qry = "SELECT chapter, article, sub_article, gdpr_text FROM gdpr_enc WHERE id='".$idx."' ORDER BY id";
-        echo $qry;
         $res=$mysqli->query($qry);
         $res=$res->fetch_array();
         array_push($data_struct, $res);
