@@ -20,10 +20,10 @@ class PDF extends FPDF{
         parent::__construct($orient, $unit, $size);
         $this->logo = $logo;
         $this->text = $text;
-        $this->$or = 'P';
+        $this->or = $orient;
     }
     function Header(){
-        if($this->$or=='P'){
+        if($this->or=='P'){
             $w=$this->GetPageWidth();
             $this->Image($this->logo,10,6,55);
             $this->SetFont('Arial','I',10);
