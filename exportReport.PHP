@@ -81,12 +81,12 @@ foreach ($data_struct as $law){
     if($ch_id!=$law[0]){ //Chapter
         $ch_id=$law[0];
         $pdf->SetX(10);
-        $pdf->Cell(0,4,'Ch.'$law[0]+': '+$law[5],0,1,'L');
+        $pdf->Cell(0,4,'Ch.'$law[0].': '.$law[5],0,1,'L');
     }
     if($art_id!=$law[1]){ //Article
         $art_id=$law[1];
         $pdf->SetX(15);
-        $pdf->Cell(0,4,'Art.'$law[1]+': '+$law[5],0,1,'L');
+        $pdf->Cell(0,4,'Art.'$law[1].': '.$law[5],0,1,'L');
     }
     $pdf->SetX(17);
     $pdf->Cell(0,4,'comma.'.$law[2],0,1,'L'); //Comma
