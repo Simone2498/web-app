@@ -8,7 +8,8 @@ define("HOST", "db-mysql-ams3-72238-do-user-9409391-0.b.db.ondigitalocean.com");
 define("USER", "doadmin");
 define ("PASSWORD", "s9gy3byw3ti4yeac");
 define ("DATABASE", "legal");
-$mysqli= new mysqli(HOST, USER, PASSWORD, DATABASE);
+define ("PORT", 25060);
+$mysqli= new mysqli(HOST, USER, PASSWORD, DATABASE, PORT);
 if ($mysqli->connect_error) {
     die("Connection failed: " . $mysqli->connect_error);
 }
@@ -66,38 +67,35 @@ if(isset($_POST['report'])){
 else{
     $data_struct = [[1,2,3,'ciao'],[1,3,1,'ciao numero 2']];
 }
-    $pdf = new PDF('P', 'mm', 'A4', './logo1.png', $intro);
-    $pdf->AddPage();
-    $w=$pdf->GetPageWidth();
-    
-    //print
-    $pdf->SetFont('Arial','B',16);
-    $pdf->Cell(0,20,'Prospetto del report generato',0,1,'C');
-    $ch_id=-1; 
-    $art_id=-1;
-    foreach ($data_struct as $law){
-        $pdf->SetFont('Arial','B',10);
-        if($ch_id!=$law[0]){ //Chapter
-            $ch_id=$law[0];
-            $pdf->SetX(10);
-            $pdf->Cell(0,4,get_chapter($law[0]),0,1,'L');
-        }
-        if($art_id!=$law[1]){ //Article
-            $art_id=$law[1];
-            $pdf->SetX(15);
-            $pdf->Cell(0,4,get_article($law[1]),0,1,'L');
-        }
-        $pdf->SetX(17);
-        $pdf->Cell(0,4,'comma.'.$law[2],0,1,'L'); //Comma
-        //print text
-        $pdf->SetX(20);
-        $pdf->SetFont('Arial','I',8);
-        $pdf->MultiCell($w-40,6,toUtf8($law[3]),0,'L',0);
-    }
-    
-    
+$pdf = new PDF('P', 'mm', 'A4', './logo1.png', $intro);
+$pdf->AddPage();
+$w=$pdf->GetPageWidth();
 
-    $pdf->Output();
+//print
+$pdf->SetFont('Arial','B',16);
+$pdf->Cell(0,20,'Prospetto del report generato',0,1,'C');
+$ch_id=-1; 
+$art_id=-1;
+foreach ($data_struct as $law){
+    $pdf->SetFont('Arial','B',10);
+    if($ch_id!=$law[0]){ //Chapter
+        $ch_id=$law[0];
+        $pdf->SetX(10);
+        $pdf->Cell(0,4,get_chapter($law[0]),0,1,'L');
+    }
+    if($art_id!=$law[1]){ //Article
+        $art_id=$law[1];
+        $pdf->SetX(15);
+        $pdf->Cell(0,4,get_article($law[1]),0,1,'L');
+    }
+    $pdf->SetX(17);
+    $pdf->Cell(0,4,'comma.'.$law[2],0,1,'L'); //Comma
+    //print text
+    $pdf->SetX(20);
+    $pdf->SetFont('Arial','I',8);
+    $pdf->MultiCell($w-40,6,toUtf8($law[3]),0,'L',0);
+}
+$pdf->Output();
 
 
 
