@@ -18,9 +18,9 @@ $mysqli->query("SET NAMES 'utf8'");
 class PDF extends FPDF{
     function __construct($orient, $unit, $size, $logo, $text){
         parent::__construct($orient, $unit, $size);
-        $this->logo=$logo;
-        $this->text=$text;
-        $this->$or=$orient;
+        $this->logo = $logo;
+        $this->text = $text;
+        $this->$or = 'P';
     }
     function Header(){
         if($this->$or=='P'){
@@ -96,8 +96,6 @@ foreach ($data_struct as $law){
     $pdf->MultiCell($w-40,6,toUtf8($law[3]),0,'L',0);
 }
 $pdf->Output();
-
-
 
 
 function get_chapter($id){
