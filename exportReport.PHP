@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 define("HOST", "db-mysql-ams3-72238-do-user-9409391-0.b.db.ondigitalocean.com");//aggiungi :port se usi protoccolo TCP/IP
 define("USER", "doadmin");
-define ("PASSWORD", "s9gy3byw3ti4yeac");
+define ("PASSWORD", "y78sjj6jcokz0yoe");
 define ("DATABASE", "legal");
 define ("PORT", 25060); //
 $mysqli= new mysqli(HOST, USER, PASSWORD, DATABASE, PORT);
