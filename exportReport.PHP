@@ -58,7 +58,7 @@ if(isset($_POST['report'])){
     $report = json_decode($_POST['report']); 
     $data_struct = [];
     foreach($report as $idx){
-        $qry = "SELECT chapter, article, sub_article, gdpr_text FROM gdpr_enc WHERE id='".$idx."' ORDER BY id";
+        $qry = "SELECT chapter, article, sub_article, gdpr_text, chapter_title, article_title FROM gdpr_enc WHERE id='".$idx."' ORDER BY id";
         $res=$mysqli->query($qry);
         $res=$res->fetch_array();
         array_push($data_struct, $res);
@@ -81,29 +81,22 @@ foreach ($data_struct as $law){
     if($ch_id!=$law[0]){ //Chapter
         $ch_id=$law[0];
         $pdf->SetX(10);
-        $pdf->Cell(0,4,get_chapter($law[0]),0,1,'L');
+        $pdf->Cell(0,4,'Ch.'$law[0]+': '+$law[5],0,1,'L');
     }
     if($art_id!=$law[1]){ //Article
         $art_id=$law[1];
         $pdf->SetX(15);
-        $pdf->Cell(0,4,get_article($law[1]),0,1,'L');
+        $pdf->Cell(0,4,'Art.'$law[1]+': '+$law[5],0,1,'L');
     }
     $pdf->SetX(17);
     $pdf->Cell(0,4,'comma.'.$law[2],0,1,'L'); //Comma
     //print text
     $pdf->SetX(20);
     $pdf->SetFont('Arial','I',8);
-    $pdf->MultiCell($w-40,6,toUtf8($law[3]),0,'L',0);
+    $pdf->MultiCell($w-40,3,toUtf8($law[3]),0,'L',0);
 }
 $pdf->Output();
 
-
-function get_chapter($id){
-    return 'chapt_title'; //toUtf8()
-}
-function get_article($id){
-    return 'art_title';
-}
 function toUtf8($str){
     return iconv('UTF-8', 'windows-1252', $str);
 }
