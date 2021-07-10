@@ -33,6 +33,7 @@
         <!-- Init -->
         <script>
            let _qry = "<?php if (isset($_POST["qry"])) echo $_POST["qry"]; else echo "data protection and privacy"; ?>";
+           let _search_mode_init = "<?php if (isset($_POST["qry"]) && $_POST["qry"]==0) echo 1; else echo 0; ?>";
         </script>
         
         
@@ -48,7 +49,7 @@
             <button type="button" class="btn btn-light" style="padding: 5px;width:60%;background-color:white" data-toggle="tooltip" data-placement="bottom" title="Dynamic search" id='dynamicSearch' data-state='0'><i class="fas fa-undo"></i></button>
           </li>
           <li class="nav-item w-25 text-center align-self-center">
-            <button type="button" class="btn btn-light" style="padding: 5px;width:60%;background-color:white" data-toggle="tooltip" data-placement="bottom" title="Espandi la ricerca" id='expandSearch' data-state='0' disabled><i class="fas fa-expand-arrows-alt"></i></button>
+            <button type="button" class="btn btn-light" style="padding: 5px;width:60%;background-color:white" data-toggle="tooltip" data-placement="bottom" title="Keyword search" id='keySearch' data-state='0'><i class="fas fa-key"></i></button>
           </li>
         </ul>
         <!-- Body -->

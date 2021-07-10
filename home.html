@@ -30,14 +30,18 @@
             </div>
             <div class='row'>
                 <div class="form-group col-md-12 text-center align-self-center">
-                   <form id='queryForm' name='queryForm' action='./tool.php' method='POST'>
-                   <textarea class="form-control" id="query" name='query' rows="7" placeholder='Inserisci una descrizione dei fatti il quanto piú tecnica e accurata possibile'></textarea>
-                   </form>
+                    <form id='queryForm' name='queryForm' action='./tool.php' method='POST'>
+                        <textarea class="form-control" id="query" name='query' rows="7" placeholder='Inserisci una descrizione dei fatti il quanto piú tecnica e accurata possibile'></textarea>
+                        <input type='hidden' id='search_mode' name='search_mode'/>
+                    </form>
                 </div>
             </div>
             <div class='row'>
-                <div class='col-md-12 text-center align-self-center'>
-                    <button type="button" class="btn btn-primary btn-lg btn-block" style='background-color: #3c89c9;border-color: #3a75a6;margin-bottom:3rem' id='searchBtn'>AVVIA LA RICERCA</button>
+                <div class='col-md-6 text-center align-self-center'>
+                    <button type="button" class="btn btn-primary btn-lg btn-block" style='background-color: #3c89c9;border-color: #3a75a6;margin-bottom:3rem' id='searchBtn_1'>Keyword search</button>
+                </div> 
+                <div class='col-md-6 text-center align-self-center'>
+                    <button type="button" class="btn btn-primary btn-lg btn-block" style='background-color: #3c89c9;border-color: #3a75a6;margin-bottom:3rem' id='searchBtn_2'>Contextual search</button>
                 </div>    
             </div>
             <div class='row'>
@@ -54,7 +58,12 @@
         </div>
         <script>
             $(document).ready(function(){
-               $(`#searchBtn`).click(function(){
+               $(`#searchBtn_1`).click(function(){
+                  $('#search_mode').val(1);
+                  $(`#queryForm`).submit(); 
+               }); 
+               $(`#searchBtn_2`).click(function(){
+                  $('#search_mode').val(0);
                   $(`#queryForm`).submit(); 
                }); 
             });

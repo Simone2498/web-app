@@ -7,6 +7,16 @@ $(document).ready(function(){
    let _enc_qry = [];
    let _R = [];
    let _NR = [];
+   let _expand=1;
+
+  if(_search_mode_init==0){
+    $(`#keySearch`).data('state',1);
+    $(`#keySearch`).css('color','#007bff');
+  }
+  else{
+    $(`#keySearch`).data('state',0);
+  }
+
    get_encode(_qry);
    
    search(_enc_qry, 0, 0);
@@ -20,13 +30,15 @@ $(document).ready(function(){
       $(`#modifyModal`).modal('toggle'); 
       _qry = $(`#query`).val();
       get_encode(_qry);
-      search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
+      search(_enc_qry, _expand, $(`#dynamicSearch`).data('state'));
    });
    /*---- Ricerca dinamica ----*/
    $(`#dynamicSearch`).click(function(){
        if($(this).data('state')!=1){
            $(this).css('color','#007bff');
            $(this).data('state',1);
+           $(`#keySearch`).css('color','black');
+           $(`#keySearch`).data('state',0);
        }
        else{
            $(this).css('color','black');
@@ -34,7 +46,7 @@ $(document).ready(function(){
        }
    });
    /*---- Ricerca espansa alle linee guida ----*/
-   $(`#expandSearch`).click(function(){
+   /*$(`#expandSearch`).click(function(){
        if($(this).data('state')!=1){
            $(this).css('color','#007bff');
            $(this).data('state',1);
@@ -45,7 +57,21 @@ $(document).ready(function(){
            $(this).data('state',0);
            search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
        }
-   });
+   });*/
+    $(`#keySearch`).click(function(){
+        if($(this).data('state')!=1){
+            $(this).css('color','#007bff');
+            $(this).data('state',1);
+            $(`#dynamicSearch`).css('color','black');
+            $(`#dynamicSearch`).data('state',0);
+            search(_enc_qry, _expand, $(`#dynamicSearch`).data('state'));
+        }
+        else{
+            $(this).css('color','black');
+            $(this).data('state',0);
+            search(_enc_qry, _expand, $(`#dynamicSearch`).data('state'));
+        }
+    });
    
    function load_placeholder(obj){ //Attiva nel container obj, da chiamare prima della funzione
         let pos = $(obj).offset();
@@ -83,7 +109,7 @@ $(document).ready(function(){
 				_R.push(id);
 		   } 
 		   if($(`#dynamicSearch`).data('state')!=0)
-			search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
+			search(_enc_qry, _expand, $(`#dynamicSearch`).data('state'));
 		   $(`.remove`).off('click');
            $(`.remove`).click(function(){
                let id = $(this).parent().parent().attr('id').split('_')[1];
@@ -98,7 +124,7 @@ $(document).ready(function(){
                     _NR.push(id);
                 }
 				if($(`#dynamicSearch`).data('state')!=0)
-					search(_enc_qry, $(`#expandSearch`).data('state'), $(`#dynamicSearch`).data('state'));
+					search(_enc_qry, _expand, $(`#dynamicSearch`).data('state'));
            });
 		   $(`.info`).off('click');
            $(`.info`).click(function(){
@@ -204,31 +230,49 @@ $(document).ready(function(){
        load_placeholder($('#col_sx').parent().parent());
        data = {};
        data.enc = JSON.stringify(enc);
-       data.inc = inc;
-       data.dyn = dyn;
-       if (dyn){
-        data.R = JSON.stringify(_R);
-        data.NR = JSON.stringify(_NR);
+       if($(`#keySearch`).data('state')==0){
+            data.inc = inc;
+            data.dyn = dyn;
+            if (dyn){
+                data.R = JSON.stringify(_R);
+                data.NR = JSON.stringify(_NR);
+            }
+            $.post(
+                _PATH+'search',
+                data,
+                function(ret){
+                    try {
+                        //alert(ret)
+                        _enc_qry = ret[0];
+                        _results_list = ret[1];
+                        if (dyn){
+                            _R =[];
+                            _NR =[];
+                        }
+                        UI_searchresults(_results_list);
+                        close_placeholder();
+                    }
+                    catch (e){
+                        alert(`C'é stato un errore di comunicazione con il server, ti invitiamo a provare piú tardi o a contattare l'assistenza`);
+                    }
+                });
        }
-       $.post(
-           _PATH+'search',
-           data,
-           function(ret){
-               try {
-                //alert(ret)
-                _enc_qry = ret[0];
-                _results_list = ret[1];
-                if (dyn){
-                    _R =[];
-                    _NR =[];
-                }
-                UI_searchresults(_results_list);
-                close_placeholder();
-               }
-               catch (e){
-                alert(`C'é stato un errore di comunicazione con il server, ti invitiamo a provare piú tardi o a contattare l'assistenza`);
-               }
-           });
+       else{
+            $.post(
+                _PATH+'key_search',
+                data,
+                function(ret){
+                    try {
+                        //alert(ret)
+                        _results_list = ret
+                        UI_searchresults(_results_list);
+                        close_placeholder();
+                    }
+                    catch (e){
+                        alert(`C'é stato un errore di comunicazione con il server, ti invitiamo a provare piú tardi o a contattare l'assistenza`);
+                    }
+                });
+       }
    }
    
    $("#exportReport").click(function(){
