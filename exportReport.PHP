@@ -8,7 +8,7 @@ define("HOST", "db-mysql-ams3-72238-do-user-9409391-0.b.db.ondigitalocean.com");
 define("USER", "doadmin");
 define ("PASSWORD", "s9gy3byw3ti4yeac");
 define ("DATABASE", "legal");
-define ("PORT", 25060);
+define ("PORT", 25060); //
 $mysqli= new mysqli(HOST, USER, PASSWORD, DATABASE, PORT);
 if ($mysqli->connect_error) {
     die("Connection failed: " . $mysqli->connect_error);
