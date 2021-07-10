@@ -10,11 +10,11 @@ $(document).ready(function(){
    let _expand=1;
 
   if(_search_mode_init==0){
-    $(`#keySearch`).data('state',1);
-    $(`#keySearch`).css('color','#007bff');
+    $(`#keySearch`).data('state',0);
   }
   else{
-    $(`#keySearch`).data('state',0);
+    $(`#keySearch`).data('state',1);
+    $(`#keySearch`).css('color','#007bff');
   }
 
    get_encode(_qry);

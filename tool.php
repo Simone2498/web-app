@@ -33,7 +33,7 @@
         <!-- Init -->
         <script>
            let _qry = "<?php if (isset($_POST["qry"])) echo $_POST["qry"]; else echo "data protection and privacy"; ?>";
-           let _search_mode_init = "<?php if (isset($_POST["qry"]) && $_POST["qry"]==0) echo 1; else echo 0; ?>";
+           let _search_mode_init = "<?php if (isset($_POST["qry"]) && $_POST["qry"]==0) echo 0; else echo 1; ?>";
         </script>
         
         
